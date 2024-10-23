@@ -3,6 +3,8 @@ package com.sergiecode.apirest.apirest.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +35,16 @@ public class ProductoController {
                 .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
     }
 
-    @PostMapping
+    /*@PostMapping
     public Producto crearProducto(@RequestBody Producto producto) {
         return productoRepository.save(producto);
+    }*/
+    @PostMapping
+    public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
+        Producto guardarProducto = productoRepository.save(producto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(guardarProducto);
     }
+    
 
     @PutMapping("/{id}")
     public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
